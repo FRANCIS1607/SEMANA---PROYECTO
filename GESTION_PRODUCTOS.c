@@ -8,9 +8,11 @@ específico y requiere una cantidad fija de recursos. El equipo de ingeniería h
 que la línea de producción tiene limitaciones de tiempo y recursos que deben ser tomadas en cuenta
 
 */
+
 #include <stdio.h>
 #include <string.h>
 
+// Aquí se guarda la información de cada producto
 struct Producto {
     char codigo[10];
     char nombre[30];
@@ -19,8 +21,10 @@ struct Producto {
     int recursos;
 };
 
+// Permite ingresar varios productos
 void ingresarProductos(struct Producto productos[], int n) {
     for (int i = 0; i < n; i++) {
+        // Se piden los datos del producto
         printf("\nProducto #%d\n", i + 1);
         printf("Codigo: ");
         scanf(" %9s", productos[i].codigo);
@@ -35,6 +39,7 @@ void ingresarProductos(struct Producto productos[], int n) {
     }
 }
 
+// Permite cambiar los datos de un producto ya guardado
 void editarProducto(struct Producto productos[], int n) {
     char buscado[10];
     printf("Ingrese el codigo del producto a editar: ");
@@ -42,6 +47,7 @@ void editarProducto(struct Producto productos[], int n) {
 
     for (int i = 0; i < n; i++) {
         if (strcmp(productos[i].codigo, buscado) == 0) {
+            // Se actualizan los datos del producto encontrado
             printf("Nuevo nombre: ");
             scanf(" %29s", productos[i].nombre);
             printf("Nueva cantidad: ");
@@ -57,6 +63,7 @@ void editarProducto(struct Producto productos[], int n) {
     printf("Producto no encontrado.\n");
 }
 
+// "Borra" un producto quitando sus datos
 void eliminarProducto(struct Producto productos[], int n) {
     char buscado[10];
     printf("Ingrese el codigo del producto a eliminar: ");
@@ -64,6 +71,7 @@ void eliminarProducto(struct Producto productos[], int n) {
 
     for (int i = 0; i < n; i++) {
         if (strcmp(productos[i].codigo, buscado) == 0) {
+            // Se vacían todos los datos del producto
             productos[i].codigo[0] = '\0';
             productos[i].nombre[0] = '\0';
             productos[i].cantidad = 0;
@@ -76,6 +84,7 @@ void eliminarProducto(struct Producto productos[], int n) {
     printf("Producto no encontrado.\n");
 }
 
+// Muestra todos los productos guardados (que no han sido eliminados)
 void mostrarProductos(struct Producto productos[], int n) {
     printf("\nProductos registrados:\n");
     for (int i = 0; i < n; i++) {
@@ -89,6 +98,7 @@ void mostrarProductos(struct Producto productos[], int n) {
     }
 }
 
+// Suma el tiempo total y los recursos que se necesitan para producir todo
 void calcularTotales(struct Producto productos[], int n) {
     int totalTiempo = 0, totalRecursos = 0;
     for (int i = 0; i < n; i++) {
@@ -99,6 +109,7 @@ void calcularTotales(struct Producto productos[], int n) {
     printf("Total de recursos necesarios: %d\n", totalRecursos);
 }
 
+// Revisa si es posible producir todo con el tiempo y recursos disponibles
 void verificarProduccion(struct Producto productos[], int n) {
     int tiempoDisponible, recursosDisponibles;
     printf("Ingrese el tiempo disponible (minutos): ");
@@ -112,6 +123,7 @@ void verificarProduccion(struct Producto productos[], int n) {
         totalRecursos += productos[i].cantidad * productos[i].recursos;
     }
 
+    // Se compara lo que se necesita con lo que hay disponible
     printf("Tiempo total requerido: %d\n", totalTiempo);
     printf("Recursos totales requeridos: %d\n", totalRecursos);
     printf("Tiempo disponible: %d\n", tiempoDisponible);
@@ -125,9 +137,10 @@ void verificarProduccion(struct Producto productos[], int n) {
 }
 
 int main() {
-    struct Producto productos[5] = {0};
+    struct Producto productos[5] = {0}; // Aquí se guardarán hasta 5 productos
     int opcion;
 
+    // Menú principal del programa
     do {
         printf("\n--- MENU ---\n");
         printf("1. Ingresar productos\n");
@@ -141,16 +154,23 @@ int main() {
         scanf("%d", &opcion);
 
         switch (opcion) {
-            case 1: ingresarProductos(productos, 5); break;
-            case 2: editarProducto(productos, 5); break;
-            case 3: eliminarProducto(productos, 5); break;
-            case 4: mostrarProductos(productos, 5); break;
-            case 5: calcularTotales(productos, 5); break;
-            case 6: verificarProduccion(productos, 5); break;
-            case 0: printf("Saliendo...\n"); break;
-            default: printf("Opcion invalida.\n");
+            case 1: ingresarProductos(productos, 5);     // Agrega productos
+                break;
+            case 2: editarProducto(productos, 5);        // Edita un producto
+                break;
+            case 3: eliminarProducto(productos, 5);      // Elimina un producto
+                break;
+            case 4: mostrarProductos(productos, 5);      // Muestra los productos
+                break;
+            case 5: calcularTotales(productos, 5);       // Calcula totales
+                break;
+            case 6: verificarProduccion(productos, 5);   // Revisa si se puede producir
+                break;
+            case 0: printf("Saliendo...\n");             // Sale del programa
+                break;
+            default: printf("Opcion invalida.\n");       // Opción incorrecta
         }
-    } while (opcion != 0);
+    } while (opcion != 0); // Repite hasta que se elija salir
 
     return 0;
 }
